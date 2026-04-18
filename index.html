@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html id="mainHtml" lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety Monitor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { margin: 0; padding: 0; background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: 0.3s; }
+        
+        /* تنزيل المحتوى بالكامل لأسفل الشاشة */
+        .page { 
+            display: none; 
+            text-align: center; 
+            min-height: 100vh; 
+            position: relative; 
+            padding-top: 100px; 
+            padding-bottom: 100px; 
+        }
+        
+        .active { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* الأزرار العلوية */
+        .lang-switch { position: absolute; top: 30px; left: 20px; z-index: 100; }
+        html[dir="ltr"] .lang-switch { left: auto; right: 20px; }
+        .back-nav { position: absolute; top: 30px; right: 20px; z-index: 100; }
+        html[dir="ltr"] .back-nav { right: auto; left: 20px; }
+
+		.app-shield-container { 
+		font-size: 100px;        /* 1. تكبير حجم الدرع */
+		color: #3b6182;         /* 2. تلوين الدرع باللون الأزرق */
+		margin: 0 auto 30px;    /* 3. توسيط الدرع ووضع مسافة أسفله */
+		display: inline-block;  /* 4. لكي يعمل التوسيط بشكل صحيح */
+		filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15)); /* 5. إضافة ظل خفيف */
+}
+        }
+
+        .welcome-section { padding: 0 5px; margin-bottom: 30px; }
+        .welcome-section h2 { font-weight: bold; color: #004a87; font-size: 30px; margin-bottom: 15px; }
+        .welcome-section p { color: #555; font-size: 14px; line-height: 1.6; text-align: justify; }
+
+        .features { padding: 0 20px; margin-bottom: 35px; }
+        .feature-item { 
+            display: flex; align-items: center; justify-content: space-between; 
+            background: white; padding: 12px 15px; border-radius: 12px; 
+            margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .feature-text { font-size: 13px; color: #333; flex: 1; text-align: inherit; font-weight: 500; }
+        .feature-icon { font-size: 20px; color: #004a87; width: 40px; text-align: center; }
+
+        .btn-main { background-color: #004a87; color: white; border-radius: 12px; padding: 15px; width: 85%; font-weight: bold; border: none; font-size: 18px; transition: 0.2s; }
+        .btn-main:active { transform: scale(0.98); background-color: #003366; }
+        
+        .developer-name { 
+            margin-top: 25px; font-size: 13px; color: #888; font-weight: bold;
+            border-top: 1px solid #eee; display: inline-block; padding-top: 15px; width: 80%;
+        }
+
+        .hazard-btn { 
+            background: white; border: 1px solid #eee; border-radius: 12px; 
+            padding: 18px; margin: 10px 20px; display: block; text-align: inherit;
+            cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-decoration: none;
+        }
+        .hazard-title { font-weight: bold; color: #004a87; font-size: 16px; }
+        .hazard-desc { font-size: 13px; color: #777; margin-top: 4px; display: block; }
+
+        .form-container { padding: 20px; text-align: inherit; }
+        .form-control { border-radius: 10px; padding: 12px; border: 1px solid #ddd; margin-bottom: 15px; font-size: 14px; }
+        .alert-info { border-radius: 10px; font-weight: bold; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <div class="lang-switch">
+        <button class="btn btn-sm btn-primary shadow-sm" onclick="toggleLanguage()" id="langBtn">English</button>
+    </div>
+
+    <div id="page1" class="page active">
+		<div class="app-shield-container">🛡️</div>
+        
+        <section class="welcome-section">
+            <h2 id="txt-title">أهلاً بكم في تطبيق "Safety Monitor"!</h2>
+            <p id="txt-welcome">مرحباً بكم في منصة مراقبة السلامة الشاملة. هدفنا هو جعل كل بيئة عمل آمنة، منتجة، ومستدامة. هذا التطبيق يتيح لكم الإبلاغ بسرعة وبدقة عن أي خطر محتمل قد تلاحظونه في موقعكم، مهما كان نوعه. معاً، نساهم في حماية الجميع وضمان استمرارية العمل.</p>
+        </section>
+
+        <section class="features">
+            <div class="feature-item">
+                <div class="feature-text" id="f1">الإبلاغ عن مخاطر المعدات والآلات الصناعية</div>
+                <div class="feature-icon"><i class="fas fa-cog"></i></div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-text" id="f2">التبليغ عن مخاطر مواقع العمل والبناء</div>
+                <div class="feature-icon"><i class="fas fa-building"></i></div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-text" id="f3">التبليغ عن قضايا الصحة والسلامة المهنية العامة</div>
+                <div class="feature-icon"><i class="fas fa-hand-holding-medical"></i></div>
+            </div>
+        </section>
+
+        <button class="btn-main shadow" onclick="showPage(2)" id="txt-start">ابدأ الإبلاغ الآن</button>
+        
+        <div class="developer-name">
+            <span id="dev-prefix">مطور التطبيق:</span> <span id="dev-name">المهندس محمد عيد الزيدانين</span>
+        </div>
+    </div>
+
+    <div id="page2" class="page">
+        <div class="back-nav">
+            <button class="btn btn-sm btn-outline-secondary shadow-sm" onclick="showPage(1)">❮ <span class="back-text">رجوع</span></button>
+        </div>
+        <h4 class="fw-bold mb-4" id="txt-cat">تصنيفات المخاطر</h4>
+        
+        <div class="hazard-btn" onclick="selectHazard('Physical', 'فيزيائية')">
+            <span class="hazard-title" id="h1-t">☢️ المخاطر الفيزيائية</span>
+            <span class="hazard-desc" id="h1-d">الضوضاء، الإشعاع، والحرارة العالية.</span>
+        </div>
+        <div class="hazard-btn" onclick="selectHazard('Chemical', 'كيميائية')">
+            <span class="hazard-title" id="h2-t">🧪 المخاطر الكيميائية</span>
+            <span class="hazard-desc" id="h2-d">مواد سامة ومنظفات خطرة.</span>
+        </div>
+        <div class="hazard-btn" onclick="selectHazard('Biological', 'بيولوجية')">
+            <span class="hazard-title" id="h3-t">🦠 المخاطر البيولوجية</span>
+            <span class="hazard-desc" id="h3-d">التعرض للفيروسات والبكتيريا.</span>
+        </div>
+        <div class="hazard-btn" onclick="selectHazard('Psychosocial', 'نفسية واجتماعية')">
+            <span class="hazard-title" id="h4-t">🧠 المخاطر النفسية والاجتماعية</span>
+            <span class="hazard-desc" id="h4-d">ضغوط العمل والتوتر المهني.</span>
+        </div>
+        <div class="hazard-btn" onclick="selectHazard('Ergonomic', 'مريحة (أرجونوميكية)')">
+            <span class="hazard-title" id="h5-t">🪑 المخاطر المريحة (الأرجونوميكية)</span>
+            <span class="hazard-desc" id="h5-d">وضعية الجسم غير الصحيحة وتصميم العمل.</span>
+        </div>
+    </div>
+
+    <div id="page3" class="page">
+        <div class="back-nav">
+            <button class="btn btn-sm btn-outline-secondary shadow-sm" onclick="showPage(2)">❮ <span class="back-text">رجوع</span></button>
+        </div>
+        <div class="form-container">
+            <h4 class="fw-bold mb-4" id="txt-report">تقديم تقرير خطر</h4>
+            <div class="alert alert-info py-2" id="selectedInfo"></div>
+            
+            <label class="fw-bold d-block mb-1" id="lbl-target">الموجه له (المشرف):</label>
+            <input type="text" id="target" class="form-control">
+            
+            <label class="fw-bold d-block mb-1" id="lbl-desc">وصف الخطر بالتفصيل:</label>
+            <textarea id="desc" class="form-control" rows="4"></textarea>
+            
+            <label class="fw-bold d-block mb-1" id="lbl-loc">مكان الخطر (أين؟):</label>
+            <input type="text" id="loc" class="form-control">
+            
+            <button id="sendBtn" class="btn-main w-100 shadow" onclick="sendToTelegram()">إرسال التقرير / Send</button>
+        </div>
+    </div>
+
+    <div id="page4" class="page">
+        <div class="mt-4 pt-4">
+            <div style="font-size: 80px; color: #2ecc71; margin-bottom: 20px;">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 id="txt-thanks" class="fw-bold mb-4" style="font-size: 28px;">شكراً لك!</h2>
+            <div class="px-4" style="line-height: 1.8; color: #333; text-align: center;">
+                <p id="msg-1" class="fw-bold">تم وصول بلاغك بنجاح إلى الجهات المختصة.</p>
+                <p id="msg-2">سيتم التعامل مع الموضوع فوراً لضمان سلامة الجميع.</p>
+                <p id="msg-3" class="text-muted small">نقدّر مساهمتك القيمة في خلق بيئة عمل آمنة وصحية لنا جميعاً.</p>
+            </div>
+            <button class="btn-main mt-5 shadow" onclick="resetAndGoBack()" id="txt-new">بلاغ جديد</button>
+        </div>
+    </div>
+
+    <script>
+        // --- إعدادات البوت المشفرة ---
+        const encodedToken = "ODYyMDc5NDAwMzpBQUdxU1NKTjFuaGZ0VUN1ZEREcVhrVFBnOVJNejI2WnNUZw=="; 
+        const BOT_TOKEN = atob(encodedToken); 
+        const CHAT_ID = "-1003840075633";
+
+        let currentLang = 'ar';
+        const translations = {
+            ar: {
+                title: 'أهلاً بكم في تطبيق "Safety Monitor"!',
+                welcome: "مرحباً بكم في منصة مراقبة السلامة الشاملة. هدفنا هو جعل كل بيئة عمل آمنة، منتجة، ومستدامة. هذا التطبيق يتيح لكم الإبلاغ بسرعة وبدقة عن أي خطر محتمل قد تلاحظونه في موقعكم، مهما كان نوعه. معاً، نساهم في حماية الجميع وضمان استمرارية العمل.",
+                f1: "الإبلاغ عن مخاطر المعدات والآلات الصناعية",
+                f2: "التبليغ عن مخاطر مواقع العمل والبناء",
+                f3: "التبليغ عن قضايا الصحة والسلامة المهنية العامة",
+                start: "ابدأ الإبلاغ الآن",
+                devPrefix: "مطور التطبيق:",
+                devName: "المهندس محمد عيد الزيدانين",
+                cat: "تصنيفات المخاطر",
+                back: "رجوع",
+                h1_t: "☢️ المخاطر الفيزيائية", h1_d: "الضوضاء، الإشعاع، والحرارة العالية.",
+                h2_t: "🧪 المخاطر الكيميائية", h2_d: "مواد سامة ومنظفات خطرة.",
+                h3_t: "🦠 المخاطر البيولوجية", h3_d: "الفيروسات والبكتيريا.",
+                h4_t: "🧠 المخاطر النفسية والاجتماعية", h4_d: "ضغوط العمل والتوتر المهني.",
+                h5_t: "🪑 المخاطر المريحة (الأرجونوميكية)", h5_d: "وضعية الجسم وتصميم العمل.",
+                report: "تقديم تقرير خطر",
+                target: "الموجه له (المشرف):",
+                desc: "وصف الخطر بالتفصيل:",
+                loc: "مكان الخطر (أين؟):",
+                send: "إرسال التقرير الآن",
+                thanks: "شكراً لك!",
+                msg1: "تم وصول بلاغك بنجاح إلى الجهات المختصة.",
+                msg2: "سيتم التعامل مع الموضوع فوراً لضمان سلامة الجميع.",
+                msg3: "نقدّر مساهمتك القيمة في خلق بيئة عمل آمنة وصحية لنا جميعاً.",
+                new: "بلاغ جديد",
+                lang: "English",
+                info: "الخطر المحدد: "
+            },
+            en: {
+                title: 'Welcome to "Safety Monitor" App!',
+                welcome: "Welcome to the comprehensive safety monitoring platform. Our goal is to make every work environment safe, productive, and sustainable. This app allows you to report quickly and accurately any potential hazard you may notice, of any kind. Together, we contribute to protecting everyone and ensuring business continuity.",
+                f1: "Report industrial equipment and machinery hazards",
+                f2: "Report construction and work site hazards",
+                f3: "Report general occupational health and safety issues",
+                start: "Start Reporting Now",
+                devPrefix: "App Developer:",
+                devName: "Eng. Mohammad Eid Al-Zaidaneen",
+                cat: "Hazard Categories",
+                back: "Back",
+                h1_t: "☢️ Physical Hazards", h1_d: "Noise, radiation, and high heat.",
+                h2_t: "🧪 Chemical Hazards", h2_d: "Toxic substances and cleaners.",
+                h3_t: "🦠 Biological Hazards", h3_d: "Viruses and bacteria.",
+                h4_t: "🧠 Psychosocial Hazards", h4_d: "Work stress and pressure.",
+                h5_t: "🪑 Ergonomic Hazards", h5_d: "Incorrect posture and design.",
+                report: "Submit Hazard Report",
+                target: "Target Person (Supervisor):",
+                desc: "Hazard Description:",
+                loc: "Hazard Location:",
+                send: "Send Report Now",
+                thanks: "Thank You!",
+                msg1: "Your report has been successfully received by the authorities.",
+                msg2: "The issue will be addressed immediately to ensure everyone's safety.",
+                msg3: "We appreciate your contribution to a safe and healthy work environment.",
+                new: "New Report",
+                lang: "العربية",
+                info: "Selected Hazard: "
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            const html = document.getElementById('mainHtml');
+            html.lang = currentLang;
+            html.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            
+            document.getElementById('langBtn').innerText = translations[currentLang].lang;
+            document.getElementById('txt-title').innerText = translations[currentLang].title;
+            document.getElementById('txt-welcome').innerText = translations[currentLang].welcome;
+            document.getElementById('f1').innerText = translations[currentLang].f1;
+            document.getElementById('f2').innerText = translations[currentLang].f2;
+            document.getElementById('f3').innerText = translations[currentLang].f3;
+            document.getElementById('txt-start').innerText = translations[currentLang].start;
+            document.getElementById('dev-prefix').innerText = translations[currentLang].devPrefix;
+            document.getElementById('dev-name').innerText = translations[currentLang].devName;
+            document.getElementById('txt-cat').innerText = translations[currentLang].cat;
+            document.querySelectorAll('.back-text').forEach(el => el.innerText = translations[currentLang].back);
+            document.getElementById('h1-t').innerText = translations[currentLang].h1_t; document.getElementById('h1-d').innerText = translations[currentLang].h1_d;
+            document.getElementById('h2-t').innerText = translations[currentLang].h2_t; document.getElementById('h2-d').innerText = translations[currentLang].h2_d;
+            document.getElementById('h3-t').innerText = translations[currentLang].h3_t; document.getElementById('h3-d').innerText = translations[currentLang].h3_d;
+            document.getElementById('h4-t').innerText = translations[currentLang].h4_t; document.getElementById('h4-d').innerText = translations[currentLang].h4_d;
+            document.getElementById('h5-t').innerText = translations[currentLang].h5_t; document.getElementById('h5-d').innerText = translations[currentLang].h5_d;
+            document.getElementById('txt-report').innerText = translations[currentLang].report;
+            document.getElementById('lbl-target').innerText = translations[currentLang].target;
+            document.getElementById('lbl-desc').innerText = translations[currentLang].desc;
+            document.getElementById('lbl-loc').innerText = translations[currentLang].loc;
+            document.getElementById('sendBtn').innerText = translations[currentLang].send;
+            document.getElementById('txt-thanks').innerText = translations[currentLang].thanks;
+            document.getElementById('msg-1').innerText = translations[currentLang].msg1;
+            document.getElementById('msg-2').innerText = translations[currentLang].msg2;
+            document.getElementById('msg-3').innerText = translations[currentLang].msg3;
+            document.getElementById('txt-new').innerText = translations[currentLang].new;
+        }
+
+        function showPage(num) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page' + num).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function resetAndGoBack() {
+            document.getElementById('target').value = "";
+            document.getElementById('desc').value = "";
+            document.getElementById('loc').value = "";
+            showPage(2);
+        }
+
+        let selectedType = "";
+        function selectHazard(en, ar) {
+            selectedType = currentLang === 'ar' ? ar : en;
+            document.getElementById('selectedInfo').innerText = (translations[currentLang].info || "") + selectedType;
+            showPage(3);
+        }
+
+        function sendToTelegram() {
+            const t = document.getElementById('target').value;
+            const d = document.getElementById('desc').value;
+            const l = document.getElementById('loc').value;
+            const btn = document.getElementById('sendBtn');
+            
+            if(!t || !d || !l) return alert(currentLang === 'ar' ? "يرجى إكمال البيانات" : "Please complete data");
+            
+            btn.disabled = true;
+            btn.innerText = "...";
+
+            let msg = "";
+            if (currentLang === 'ar') {
+                msg = `🚨 *بلاغ خطر جديد* 🚨\n\n` +
+                      `🗂 *نوع الخطر:* ${selectedType}\n` +
+                      `👤 *الموجه له:* ${t}\n` +
+                      `📍 *الموقع:* ${l}\n` +
+                      `📝 *وصف الخطر:* ${d}\n\n` +
+                      `🕒 *التوقيت:* ${new Date().toLocaleString('ar-EG')}\n` +
+                      `✅ _يرجى اتخاذ الإجراءات اللازمة_`;
+            } else {
+                msg = `🚨 *New Hazard Report* 🚨\n\n` +
+                      `🗂 *Hazard Type:* ${selectedType}\n` +
+                      `👤 *To (Supervisor):* ${t}\n` +
+                      `📍 *Location:* ${l}\n` +
+                      `📝 *Description:* ${d}\n\n` +
+                      `🕒 *Time:* ${new Date().toLocaleString('en-US')}\n` +
+                      `✅ _Action Required_`;
+            }
+            
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(msg)}&parse_mode=Markdown`)
+            .then(res => { if(res.ok) showPage(4); else alert("Error Sending Message"); })
+            .catch(() => alert("Network Error"))
+            .finally(() => { btn.disabled = false; btn.innerText = translations[currentLang].send; });
+        }
+    </script>
+</body>
+</html>
