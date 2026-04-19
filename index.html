@@ -133,6 +133,14 @@
             <span class="hazard-title" id="h5-t">🪑 المخاطر المريحة (الأرجونوميكية)</span>
             <span class="hazard-desc" id="h5-d">وضعية الجسم غير الصحيحة وتصميم العمل.</span>
         </div>
+		 <div class="hazard-btn" onclick="selectHazard('Environment', 'المخاطر البيئية')">
+            <span class="hazard-title" id="h6-t">🍀 المخاطر البيئية</span>
+            <span class="hazard-desc" id="h6-d">النظافة والترتيب، الصرف الصحي، النفايات الخطرة وغير الخطرة.</span>
+        </div>
+		 <div class="hazard-btn" onclick="selectHazard('Other', 'مخاطر أخرى')">
+            <span class="hazard-title" id="h7-t">⚠️ مخاطر أخرى</span>
+            <span class="hazard-desc" id="h7-d">الإنزلاق والتعثر، صيانة، مرافق عامة، تسرب مياه، جدران متآكلة، إلخ...</span>
+        </div>
     </div>
 
     <div id="page3" class="page">
@@ -198,6 +206,8 @@
                 h3_t: "🦠 المخاطر البيولوجية", h3_d: "الفيروسات والبكتيريا.",
                 h4_t: "🧠 المخاطر النفسية والاجتماعية", h4_d: "ضغوط العمل والتوتر المهني.",
                 h5_t: "🪑 المخاطر المريحة (الأرجونوميكية)", h5_d: "وضعية الجسم وتصميم العمل.",
+				h6_t: "🍀 المخاطر البيئية", h6_d: "النظافة والترتيب، الصرف الصحي، النفايات الخطرة وغير الخطرة.",
+				h7_t: "⚠️ مخاطر أخرى", h7_d: "الإنزلاق والتعثر، صيانة، مرافق عامة، تسرب مياه، جدران متآكلة، إلخ...",
                 report: "تقديم تقرير خطر",
 				reporter: "مرسل البلاغ (اختياري):",
                 target: "الموجه له (المشرف):",
@@ -228,6 +238,9 @@
                 h3_t: "🦠 Biological Hazards", h3_d: "Viruses and bacteria.",
                 h4_t: "🧠 Psychosocial Hazards", h4_d: "Work stress and pressure.",
                 h5_t: "🪑 Ergonomic Hazards", h5_d: "Incorrect posture and design.",
+                h5_t: "🍀 Environment Hazards", h6_d: "housekeeping, sanitation, hazardous and non-hazardous waste management.",
+                h5_t: "⚠️ Other Hazards", h7_d: "maintenance-related issues, public facilities, water leakage, structurally compromised walls, etc..",
+
                 report: "Submit Hazard Report",
 		    	reporter: "reporter (optional):",
                 target: "Target Person (Supervisor):",
@@ -266,6 +279,8 @@
             document.getElementById('h3-t').innerText = translations[currentLang].h3_t; document.getElementById('h3-d').innerText = translations[currentLang].h3_d;
             document.getElementById('h4-t').innerText = translations[currentLang].h4_t; document.getElementById('h4-d').innerText = translations[currentLang].h4_d;
             document.getElementById('h5-t').innerText = translations[currentLang].h5_t; document.getElementById('h5-d').innerText = translations[currentLang].h5_d;
+            document.getElementById('h6-t').innerText = translations[currentLang].h6_t; document.getElementById('h6-d').innerText = translations[currentLang].h6_d;
+            document.getElementById('h7-t').innerText = translations[currentLang].h7_t; document.getElementById('h7-d').innerText = translations[currentLang].h7_d;
             document.getElementById('txt-report').innerText = translations[currentLang].report;
 		    document.getElementById('lbl-reporter').innerText = translations[currentLang].reporter;
             document.getElementById('lbl-target').innerText = translations[currentLang].target;
