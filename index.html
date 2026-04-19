@@ -312,7 +312,7 @@
                       `📍 *الموقع:* ${l}\n` +
                       `📝 *وصف الخطر:* ${d}\n\n` +
                       `🕒 *التوقيت:* ${new Date().toLocaleString('ar-EG')}\n` +
-                      `🛑 _يرجى اتخاذ الإجراءات اللازمة_`;
+                      `🛑_يرجى اتخاذ الإجراءات اللازمة_`;
             } else {
                 msg = `🚨 *New Hazard Report* 🚨\n\n` +
                       `🗂 *Hazard Type:* ${selectedType}\n` +
@@ -320,7 +320,7 @@
                       `📍 *Location:* ${l}\n` +
                       `📝 *Description:* ${d}\n\n` +
                       `🕒 *Time:* ${new Date().toLocaleString('en-US')}\n` +
-                      `🛑 _Action Required_`;
+                      `🛑_Action Required_`;
             }
             
             fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(msg)}&parse_mode=Markdown`)
