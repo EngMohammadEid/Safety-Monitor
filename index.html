@@ -142,6 +142,9 @@
         <div class="form-container">
             <h4 class="fw-bold mb-4" id="txt-report">تقديم تقرير خطر</h4>
             <div class="alert alert-info py-2" id="selectedInfo"></div>
+
+            <label class="fw-bold d-block mb-1" id="lbl-reporter">مرسل البلاغ (اختياري):</label>
+            <input type="text" id="reporter" class="form-control">
             
             <label class="fw-bold d-block mb-1" id="lbl-target">الموجه له (المشرف):</label>
             <input type="text" id="target" class="form-control">
@@ -297,6 +300,7 @@
             const t = document.getElementById('target').value;
             const d = document.getElementById('desc').value;
             const l = document.getElementById('loc').value;
+			const r = document.getElementById('reporter').value;
             const btn = document.getElementById('sendBtn');
             
             if(!t || !d || !l) return alert(currentLang === 'ar' ? "يرجى إكمال البيانات" : "Please complete data");
@@ -308,6 +312,7 @@
             if (currentLang === 'ar') {
                 msg = `🚨 *بلاغ خطر جديد* 🚨\n\n` +
                       `🗂 *نوع الخطر:* ${selectedType}\n` +
+					  `👤 *مرسل البلاغ:* ${t}\n` +
                       `👤 *الموجه له:* ${t}\n` +
                       `📍 *الموقع:* ${l}\n` +
                       `📝 *وصف الخطر:* ${d}\n\n` +
@@ -316,6 +321,7 @@
             } else {
                 msg = `🚨 *New Hazard Report* 🚨\n\n` +
                       `🗂 *Hazard Type:* ${selectedType}\n` +
+			          `👤 *from (reporter):* ${t}\n` +
                       `👤 *To (Supervisor):* ${t}\n` +
                       `📍 *Location:* ${l}\n` +
                       `📝 *Description:* ${d}\n\n` +
