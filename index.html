@@ -199,8 +199,8 @@
                 h4_t: "🧠 المخاطر النفسية والاجتماعية", h4_d: "ضغوط العمل والتوتر المهني.",
                 h5_t: "🪑 المخاطر المريحة (الأرجونوميكية)", h5_d: "وضعية الجسم وتصميم العمل.",
                 report: "تقديم تقرير خطر",
-                target: "الموجه له (المشرف):",
 				reporter: "مرسل البلاغ (اختياري):",
+                target: "الموجه له (المشرف):",
                 desc: "وصف الخطر بالتفصيل:",
                 loc: "مكان الخطر (أين؟):",
                 send: "إرسال التقرير الآن",
@@ -229,8 +229,8 @@
                 h4_t: "🧠 Psychosocial Hazards", h4_d: "Work stress and pressure.",
                 h5_t: "🪑 Ergonomic Hazards", h5_d: "Incorrect posture and design.",
                 report: "Submit Hazard Report",
+		    	reporter: "reporter (optional):",
                 target: "Target Person (Supervisor):",
-				reporter: "reporter (optional):",
                 desc: "Hazard Description:",
                 loc: "Hazard Location:",
                 send: "Send Report Now",
@@ -267,6 +267,7 @@
             document.getElementById('h4-t').innerText = translations[currentLang].h4_t; document.getElementById('h4-d').innerText = translations[currentLang].h4_d;
             document.getElementById('h5-t').innerText = translations[currentLang].h5_t; document.getElementById('h5-d').innerText = translations[currentLang].h5_d;
             document.getElementById('txt-report').innerText = translations[currentLang].report;
+		    document.getElementById('txt-reporter').innerText = translations[currentLang].reporter;
             document.getElementById('lbl-target').innerText = translations[currentLang].target;
             document.getElementById('lbl-desc').innerText = translations[currentLang].desc;
             document.getElementById('lbl-loc').innerText = translations[currentLang].loc;
@@ -286,6 +287,7 @@
 
         function resetAndGoBack() {
             document.getElementById('target').value = "";
+	        document.getElementById('reporter').value = "";
             document.getElementById('desc').value = "";
             document.getElementById('loc').value = "";
             showPage(2);
@@ -300,9 +302,9 @@
 
         function sendToTelegram() {
             const t = document.getElementById('target').value;
+			const r = document.getElementById('reporter').value;
             const d = document.getElementById('desc').value;
             const l = document.getElementById('loc').value;
-			const r = document.getElementById('reporter').value;
             const btn = document.getElementById('sendBtn');
             
             if(!t || !d || !l) return alert(currentLang === 'ar' ? "يرجى إكمال البيانات" : "Please complete data");
