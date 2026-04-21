@@ -315,9 +315,9 @@
             showPage(3);
         }
 
-        function sendToTelegram() {
+                function sendToTelegram() {
             const t = document.getElementById('target').value;
-			const r = document.getElementById('reporter').value;
+            const r = document.getElementById('reporter').value;
             const d = document.getElementById('desc').value;
             const l = document.getElementById('loc').value;
             const btn = document.getElementById('sendBtn');
@@ -327,32 +327,65 @@
             btn.disabled = true;
             btn.innerText = "...";
 
+            // 1. تجهيز رسالة التيلجرام
             let msg = "";
             if (currentLang === 'ar') {
                 msg = `🚨 *بلاغ خطر جديد* 🚨\n\n` +
                       `🗂 *نوع الخطر:* ${selectedType}\n` +
-					  `👤 *مرسل البلاغ:* ${r}\n` +
+                      `👤 *مرسل البلاغ:* ${r}\n` +
                       `👤 *الموجه له:* ${t}\n` +
                       `📍 *الموقع:* ${l}\n` +
                       `📝 *وصف الخطر:* ${d}\n\n` +
                       `🕒 *التوقيت:* ${new Date().toLocaleString('ar-EG')}\n` +
-                      `🛑_يرجى اتخاذ الإجراءات اللازمة_`;
+                      `🛑 _يرجى اتخاذ الإجراءات اللازمة_`;
             } else {
                 msg = `🚨 *New Hazard Report* 🚨\n\n` +
                       `🗂 *Hazard Type:* ${selectedType}\n` +
-			          `👤 *from (reporter):* ${r}\n` +
+                      `👤 *from (reporter):* ${r}\n` +
                       `👤 *To (Supervisor):* ${t}\n` +
                       `📍 *Location:* ${l}\n` +
                       `📝 *Description:* ${d}\n\n` +
                       `🕒 *Time:* ${new Date().toLocaleString('en-US')}\n` +
-                      `🛑_Action Required_`;
+                      `🛑 _Action Required_`;
             }
+
+            // روابط الإرسال
+            const telegramURL = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(msg)}&parse_mode=Markdown`;
             
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(msg)}&parse_mode=Markdown`)
-            .then(res => { if(res.ok) showPage(4); else alert("Error Sending Message"); })
-            .catch(() => alert("Network Error"))
-            .finally(() => { btn.disabled = false; btn.innerText = translations[currentLang].send; });
+            // بيانات إنذار Pushover (تفعيل الصوت)
+            const pushoverData = {
+                token: "ajga14cj1r119ez7j9s3bp9w6ukwbb",
+                user: "u7st14yu4hw8n3j4kicad9u5phxpb1",
+                message: `⚠️ إنذار خطر: ${selectedType}\nالموقع: ${l}`,
+                priority: 2,    // أولوية قصوى (تجاوز الصامت)
+                retry: 30,      // إعادة كل 30 ثانية
+                expire: 3600,   // لمدة ساعة
+                sound: "siren"  // صوت السارينة
+            };
+
+            // تنفيذ الإرسال لـ Telegram و Pushover معاً
+            Promise.all([
+                fetch(telegramURL),
+                fetch("https://api.pushover.net/1/messages.json", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams(pushoverData)
+                })
+            ])
+            .then(responses => {
+                // إذا نجح إرسال التيلجرام على الأقل، اظهر صفحة الشكر
+                if(responses[0].ok) {
+                    showPage(4);
+                } else {
+                    alert("Error Sending Telegram Message");
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Network Error");
+            })
+            .finally(() => { 
+                btn.disabled = false; 
+                btn.innerText = translations[currentLang].send; 
+            });
         }
-    </script>
-</body>
-</html>
